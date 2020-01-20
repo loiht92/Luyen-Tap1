@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let a = new Array(1000);
+    let count = 0;
+
+    function init(n) { // khoi tao//
+        for (let i = 0; i < n; i++)
+            a[i] = Math.round(Math.random() * 1000);
+    }
+
+    function show(n) { // hien thi//
+        for (let i = 0; i < n; i++)
+            document.write(i + " : " + a[i])
+    }
+
+    function sequentialSearch(x, n) { // tim kiem tuan tu//
+        let indArr = new Array();
+        for (let i = 0; i < n; i++)
+            if (a[i] === x)
+                indArr.push(i);
+        return indArr;
+    }
+
+    function binarySearch(x, i, j) {  // tim kiem nhi phan, de quy//
+        if (i > j)
+            return -1; //khong tim thay//
+        let m = Math.round((i + j) / 2); // phan tu o giua//
+        if (a[m] === x)
+            return m;
+
+        if (a[m] > x) // neu phan tu o giua lon hon gia tri can tim thi ta tim o nua truoc va gan lai gia tri nua sau//
+            j = m; //gan lai cho phan tu j (nua sau)//
+        else i = m; //gan lai cho phan tu i//
+
+        return binarySearch(); // goi de quy//
+    }
+
+    function main(n) { //goi //
+        count = prompt("nhap vao so phan tu cua mang");
+        count = parseInt(count);
+        init(count);
+        show(count);
+
+        let x = prompt("nhap gia tri can tim");
+        x = parseInt(x);
+        let pos = sequentialSearch(x, count);
+        if (pos.length !== 0) {
+            let i;
+            let str = "tim thay tai vi tri:";
+
+            for (i in pos)
+                str += pos[i] + ",";
+            alert(str);
+        } else
+            alert("khong tim thay");
+
+        a.sort(function (a, b) { // tim kiem nhi phan :chi tim kiem duoc tren mang da sap xep//
+            return a - b;
+        });
+
+        let bPos = binarySearch(x, 0, count-1); // count: so phan tu//
+        if (bPos === -1)
+            alert("khong tim thay");
+        else
+            alert(" tim thay o vi tri" + bPos);
+
+        selectionSort();
+        document.write("Sau khi sap xep");
+        show(count);
+    }
+
+    //Sap xep//
+    //Sap xep lua chon//
+    function selectionSort() {
+        let i, j, tmp; //tmp la thuat toan dung de hoan doi//
+        let min, pMin; // pMin: vi tri gia tri nho nhat//
+        for (i = 0; i < a.length - 1; i++) { // so sanh den phan tu truoc phan tu cuoi cung//
+            min = a[i];
+            pMin = i;
+            for (j = i + 1; j < a.length; j++) { // so sanh den phan tu cuoi cung//
+                if (a[j] < min) {
+                    min = a[j];
+                    pMin = j;
+                }
+            }
+            if (a[i] !== min) { // hoan doi vi tri cua 2 phan tu//
+                tmp = a[i];
+                a[i] = a[pMin];
+                a[pMin] = tmp;
+            }
+        }
+    }
+    main();
+</script>
+</body>
+</html>
